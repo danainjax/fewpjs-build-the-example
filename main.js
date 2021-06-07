@@ -1,6 +1,9 @@
 // Defining text characters for the empty and full hearts for you to use later.
 const EMPTY_HEART = '♡'
 const FULL_HEART = '♥'
+const hearts = document.querySelectorAll('.like-glyph');
+const modal = document.querySelector("#modal")
+modal.className = "hidden"
 // When a user clicks on an empty heart:
 //   * Invoke `mimicServerCall` to simulate making a server request
 //   * When the "server" returns a failure status:
@@ -10,21 +13,48 @@ const FULL_HEART = '♥'
 //     * Display the server error message in the modal
 //     * Use `setTimeout` to hide the modal after 3 seconds (add the `.hidden` class)
 // Your JavaScript code goes here!
-const likes = document.querySelectorAll('.like');
-console.log(likes);
-likes.forEach(heart =>{
-  heart.addEventListener('click', (e) => {
-    if (e.target.innerHTML === EMPTY_HEART) {
-      e.target.innerHTML = FULL_HEART;
-      e.target.outerHTML = `<span class="activated-heart">${FULL_HEART}</span>`
-    }else 
-     e.target.innerHTML = EMPTY_HEART
-     e.target.outerHTML = `<span class="like-glyph">${EMPTY_HEART}</span>`
+
+
+
+
+
+  for (const heart of hearts) {
+    heart.addEventListener('click', (e) => { 
+      mimicServerCall()
+      .then(() => {
+        if (heart.innerHTML == EMPTY_HEART) {
+          heart.innerHTML = FULL_HEART;
+          heart.className = "activated-heart"
+        } else {
+          console.log(heart.innerHTML)
+          heart.innerHTML = EMPTY_HEART
+          heart.className = "like-glyph"
+        }
+
+      })
+      .catch(error => {
+        modal.className = " "
+        const modalMessage = document.querySelector("#modal-message")
+        modalMessage.innerText = error
+        setTimeout(() =>{
+          modal.className = "hidden"
+        }, 5000)
+      })
+    })
+  }
+     
+      
     
     
+       
     
-  })
-})
+      
+      
+    
+      
+    
+
+
 
 
 
